@@ -364,7 +364,7 @@ class _HomePageState extends State<HomePage> {
       SettingsPage(activation: activation, onRefresh: load),
     ];
     return Directionality(
-      textDirection: TextDirection.values.last,
+      Directionality.of(context)
       child: Scaffold(
         appBar: AppBar(
           title: Text(['داشبورد', 'بانک حرکات', 'ورزشکاران', 'تنظیمات'][tab],
@@ -646,7 +646,7 @@ class _PlanPageState extends State<PlanPage> {
   }
 
   @override Widget build(BuildContext context) => Directionality(
-    textDirection: TextDirection.rtl,
+   Directionality.of(context)
     child: Scaffold(
       appBar: AppBar(title: Text('برنامه ${widget.athlete.name}')),
       body: ListView(padding: const EdgeInsets.all(16), children: [

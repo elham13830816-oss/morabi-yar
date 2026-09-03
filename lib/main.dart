@@ -364,7 +364,7 @@ class _HomePageState extends State<HomePage> {
       SettingsPage(activation: activation, onRefresh: load),
     ];
     return Directionality(
-      textDirection: TextDirection.rtl,
+      textDirection: TextDirection.values.last,
       child: Scaffold(
         appBar: AppBar(
           title: Text(['داشبورد', 'بانک حرکات', 'ورزشکاران', 'تنظیمات'][tab],
@@ -434,20 +434,55 @@ class DashboardPage extends StatelessWidget {
 }
 
 class StatCard extends StatelessWidget {
-  final String title, value;
+  final String title;
+  final String value;
   final IconData icon;
-  const StatCard({super.key, required this.title, required this.value, required this.icon});
-  @override Widget build(BuildContext context) => Expanded(
-    child: Card(child: Padding(padding: const EdgeInsets.all(16), child: Row(children: [
-      CircleAvatar(child: Icon(icon, size: 20)),
-      const SizedBox(width: 12),
-      Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(value, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900)),
-        Text(title, style: const TextStyle(color: Colors.white54)),
-      ]),
-    ])),
-  );
+
+  const StatCard({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              CircleAvatar(
+                child: Icon(icon, size: 20),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    value,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.white54,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
+
 
 class AthleteTile extends StatelessWidget {
   final Athlete a; final bool hasPlan; final VoidCallback onTap;

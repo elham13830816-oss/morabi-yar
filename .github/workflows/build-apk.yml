@@ -1,40 +1,53 @@
 name: Build Android APK
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Flutter
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: gradle
+
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: "3.24.5"
           channel: stable
           cache: true
 
-      - name: Generate Android platform files
-        run: flutter create . --platforms=android --project-name morabi_yar
-
-      - name: Get packages
+      - name: Get dependencies
         run: flutter pub get
 
-      - name: Remove generated sample test
-        run: rm -rf test
-  
-      - name: Analyze
+      - name: Create Android platform
+        run: flutter create --platforms=android .
+
+      - name: Make Gradle executable
+        run: chmod +x android/gradlew
+
+      - name: Analyze project
         run: flutter analyze
 
-      - name: Build release APK
+      - name: Build APK
         run: flutter build apk --release
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: morabi-yar-release-apk
+          name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk

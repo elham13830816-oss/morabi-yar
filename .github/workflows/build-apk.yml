@@ -4,9 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -14,33 +12,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: "17"
-          cache: gradle
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.24.5"
           channel: stable
-          cache: true
+
+      - name: Create Android project
+        run: flutter create . --platforms=android --project-name morabi_yar
 
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Create Android platform
-        run: flutter create --platforms=android .
+      - name: Remove generated sample test
+        run: rm -rf test
 
-      - name: Make Gradle executable
-        run: chmod +x android/gradlew
-
-      - name: Analyze project
+      - name: Analyze
         run: flutter analyze
 
       - name: Build APK
@@ -49,5 +38,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
+          name: morabi-yar-apk
           path: build/app/outputs/flutter-apk/app-release.apk

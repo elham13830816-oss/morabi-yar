@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -122,22 +121,20 @@ class Store {
         .map((e) => PlanItem.fromJson(Map<String, dynamic>.from(e))).toList()));
   }
 
-  static Future<void> savePlans(Map<String, List<PlanItem>> plans) async {
-    final p = await prefs;
-    await p.setString(
-  plansKey,
-  jsonEncode(
-    plans.map(
-      (key, value) => MapEntry(
-        key,
-        value.map((exercise) => exercise.toJson()).toList(),
+static Future<void> savePlans(Map<String, List<PlanItem>> plans) async {
+  final p = await prefs;
+  await p.setString(
+    plansKey,
+    jsonEncode(
+      plans.map(
+        (k, v) => MapEntry(
+          k,
+          v.map((e) => e.toJson()).toList(),
+        ),
       ),
-    ).toList(),
-  ),
-);
-
-  }
-
+    ),
+  );
+}
   static Future<String> password() async {
     final p = await prefs;
     return p.getString(passKey) ?? '1234';

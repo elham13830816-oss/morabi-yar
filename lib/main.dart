@@ -124,8 +124,18 @@ class Store {
 
   static Future<void> savePlans(Map<String, List<PlanItem>> plans) async {
     final p = await prefs;
-    await p.setString(plansKey, jsonEncode(plans.map((k, v) =>
-        MapEntry(k, v.map((e) => e.toJson()).toList()))));
+    await p.setString(
+  plansKey,
+  jsonEncode(
+    plans.map(
+      (key, value) => MapEntry(
+        key,
+        value.map((exercise) => exercise.toJson()).toList(),
+      ),
+    ).toList(),
+  ),
+);
+
   }
 
   static Future<String> password() async {

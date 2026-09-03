@@ -364,8 +364,8 @@ class _HomePageState extends State<HomePage> {
       SettingsPage(activation: activation, onRefresh: load),
     ];
     return Directionality(
-      Directionality.of(context)
-      child: Scaffold(
+  textDirection: TextDirection.rtl,
+  child: Scaffold(
         appBar: AppBar(
           title: Text(['داشبورد', 'بانک حرکات', 'ورزشکاران', 'تنظیمات'][tab],
               style: const TextStyle(fontWeight: FontWeight.w800)),
@@ -646,8 +646,8 @@ class _PlanPageState extends State<PlanPage> {
   }
 
   @override Widget build(BuildContext context) => Directionality(
-   Directionality.of(context)
-    child: Scaffold(
+  textDirection: TextDirection.rtl,
+  child: Scaffold(
       appBar: AppBar(title: Text('برنامه ${widget.athlete.name}')),
       body: ListView(padding: const EdgeInsets.all(16), children: [
         Card(child: Padding(padding: const EdgeInsets.all(18), child: Row(children: [

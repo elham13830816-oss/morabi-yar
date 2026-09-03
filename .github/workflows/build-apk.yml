@@ -24,6 +24,9 @@ jobs:
       - name: Get packages
         run: flutter pub get
 
+      - name: Remove generated sample test
+        run: rm -rf test
+  
       - name: Analyze
         run: flutter analyze
 

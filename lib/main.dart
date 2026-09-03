@@ -121,20 +121,12 @@ class Store {
         .map((e) => PlanItem.fromJson(Map<String, dynamic>.from(e))).toList()));
   }
 
-static Future<void> savePlans(Map<String, List<PlanItem>> plans) async {
-  final p = await prefs;
-  await p.setString(
-    plansKey,
-    jsonEncode(
-      plans.map(
-        (k, v) => MapEntry(
-          k,
-          v.map((e) => e.toJson()).toList(),
-        ),
-      ),
-    ),
-  );
-}
+  static Future<void> savePlans(Map<String, List<PlanItem>> plans) async {
+    final p = await prefs;
+    await p.setString(plansKey, jsonEncode(plans.map((k, v) =>
+        MapEntry(k, v.map((e) => e.toJson()).toList()))));
+  }
+
   static Future<String> password() async {
     final p = await prefs;
     return p.getString(passKey) ?? '1234';

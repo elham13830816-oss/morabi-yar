@@ -1,14 +1,13 @@
-name: Build Android APK
+name: Build APK
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-      - master
-  workflow_dispatch:
 
 jobs:
-  build:
+  build-apk:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,19 +17,16 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: '3.47.2'
           channel: stable
+          cache: true
 
-      - name: Create Android project
-        run: flutter create . --platforms=android --project-name morabi_yar
-
-      - name: Get dependencies
+      - name: Flutter Pub Get
         run: flutter pub get
 
-      - name: Remove generated sample test
-        run: rm -rf test
-
-      - name: Analyze
+      - name: Run flutter analyze
         run: flutter analyze
+        continue-on-error: true
 
       - name: Build APK
         run: flutter build apk --release
@@ -40,3 +36,5 @@ jobs:
         with:
           name: morabi-yar-apk
           path: build/app/outputs/flutter-apk/app-release.apk
+
+

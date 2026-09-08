@@ -3,12 +3,13 @@ name: Build Android and iOS
 on:
   workflow_dispatch:
   push:
-    branches: [ main, master ]
+    branches:
+      - main
+      - master
 
 jobs:
   android:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,7 +30,7 @@ jobs:
         run: rm -rf test
 
       - name: Analyze
-       run: flutter analyze || true
+        run: flutter analyze --no-fatal-infos
 
       - name: Build Android APK
         run: flutter build apk --release
@@ -42,7 +43,6 @@ jobs:
 
   ios:
     runs-on: macos-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -63,7 +63,8 @@ jobs:
         run: rm -rf test
 
       - name: Analyze
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos
 
       - name: Build iOS
         run: flutter build ios --release --no-codesign
+

@@ -204,14 +204,12 @@ class _GatePageState extends State<GatePage> {
             constraints: const BoxConstraints(maxWidth: 430),
             child: Column(
               children: [
-                Container(
-                  width: 86, height: 86,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(colors: [Color(0xFF7C4DFF), Color(0xFF00C2FF)]),
-                    borderRadius: BorderRadius.circular(26),
-                  ),
-                  child: const Icon(Icons.fitness_center, size: 44),
-                ),
+                Image.asset(
+                  'assets/logo.png',
+                   width: 100,
+                   height: 100,
+                   fit: BoxFit.contain,
+                ), 
                 const SizedBox(height: 20),
                 const Text('مربی‌یار', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900)),
                 const SizedBox(height: 8),

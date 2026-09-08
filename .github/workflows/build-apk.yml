@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android and iOS
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build:
+  android:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,16 +17,10 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: '3.47.2'
           cache: true
 
-      - name: Generate Android platform files
-        run: flutter create --platforms=android --project-name morabi_yar .
-
-      - name: Check Android files
-        run: |
-          echo "Android files:"
-          find android -maxdepth 3 -type f | sort
+      - name: Generate platform files
+        run: flutter create . --platforms=android,ios --project-name morabi_yar
 
       - name: Get packages
         run: flutter pub get
@@ -36,14 +30,40 @@ jobs:
 
       - name: Analyze
         run: flutter analyze
-        continue-on-error: true
 
-      - name: Build release APK
+      - name: Build Android APK
         run: flutter build apk --release
 
-      - name: Upload APK
+      - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: morabi-yar-release-apk
+          name: morabi-yar-android
           path: build/app/outputs/flutter-apk/app-release.apk
 
+  ios:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generate platform files
+        run: flutter create . --platforms=android,ios --project-name morabi_yar
+
+      - name: Get packages
+        run: flutter pub get
+
+      - name: Remove generated sample test
+        run: rm -rf test
+
+      - name: Analyze
+        run: flutter analyze
+
+      - name: Build iOS
+        run: flutter build ios --release --no-codesign
